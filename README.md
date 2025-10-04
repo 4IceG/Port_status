@@ -13,7 +13,7 @@
 > Moja mała modyfikacja "Statusu portów".
 
 > [!IMPORTANT]
-> ***Change port label/description*** - click on the header   
+> ***Change port label / description*** - click on the header   
 > ***Change port order*** - drag and drop (grab the area around the icon)
 > 
 > 

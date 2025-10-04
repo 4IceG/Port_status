@@ -20,6 +20,16 @@
 > ***Zmiana etykiety / opisu portu*** - klikamy w nagłówek   
 > ***Zmiana kolejności portów*** - przeciągnij i upuść (chwytamy za obszar wokół ikony)
 
+> [!IMPORTANT]
+> ***Path to file:***   
+> ***Compilation:***
+> /feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include   
+> ***Router:***
+> /www/luci-static/resources/view/status/include
+
+
+
+
 
 ### <img src="https://raw.githubusercontent.com/4IceG/Personal_data/master/dooffy_design_icons_EU_flags_United_Kingdom.png" height="24"> Preview / <img src="https://raw.githubusercontent.com/4IceG/Personal_data/master/dooffy_design_icons_EU_flags_Poland.png" height="24"> Podgląd
 > Previously / Wcześniej

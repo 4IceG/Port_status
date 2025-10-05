@@ -1,0 +1,33 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+msgid "Edit Port Label"
+msgstr "Edytuj etykietę portu"
+
+msgid "Enter new label for this port:"
+msgstr "Wprowadź nową etykietę dla tego portu:"
+
+msgid "Device"
+msgstr "Urządzenie"
+
+msgid "Original label"
+msgstr "Oryginalna etykieta"
+
+msgid "Restore Original"
+msgstr "Przywróć oryginalną"
+
+msgid "Cancel"
+msgstr "Anuluj"
+
+msgid "Save"
+msgstr "Zapisz"
+
+msgid "Click to edit label"
+msgstr "Kliknij aby edytować etykietę"
+
+msgid "Hold to drag and reorder"
+msgstr "Przytrzymaj aby przeciągnąć i zmienić kolejność"
+
+msgid "Enter description (optional):"
+msgstr "Dodaj opis (opcjonalnie):"
+

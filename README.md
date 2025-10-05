@@ -26,6 +26,10 @@
 > /feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include   
 > ***Router:***
 > /www/luci-static/resources/view/status/include
+> 
+> ***Translation of new windows / menu elements:***   
+> ***Copy translation from Port_status.pot to file:***
+> /feeds/luci/modules/luci-base/po/xx
 
 
 

@@ -46,21 +46,25 @@
    <summary>Pokaż | Show me</summary>
 
 ``` bash
- 	"luci-mod-status-index-ports": {
+	"luci-mod-status-index-ports": {
 	  "description": "Grant access to port status display",
-	  "read": {
-	    "ubus": {
-	      "luci": [ "getBuiltinEthernetPorts" ]
-	    },
-	    "file": {
-	      "/etc/user_defined_ports.json": ["read"]
-	    }
-	  },
-	  "write": {
-	    "file": {
-	      "/etc/user_defined_ports.json": ["write"]
-	    }
-	  }
+		"read": {
+			"file": {
+				"/etc/user_defined_ports.json": [ "read" ]
+			},
+			"ubus": {
+				"file": [ "read" ],
+				"luci": [ "getBuiltinEthernetPorts" ]
+			}
+		},
+		"write": {
+			"file": {
+				"/etc/user_defined_ports.json": [ "write" ]
+			},
+			"ubus": {
+				"file": [ "write" ]
+			}
+		}
 	},
 ```
 </details>

@@ -838,7 +838,7 @@ return baseclass.extend({
 			var descriptionDiv = E('div', { 
 				'class': 'ifacebox-body port-description', 
 				'style': 'font-size:70%; color: var(--text-color-secondary); padding: 0.2em 0.5em; min-height: 1.2em; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; cursor: help; display: ' + (port.description ? 'block' : 'none'),
-				'title': port.description || ''  // Dodany tooltip z pełnym opisem
+				'title': port.description || ''
 			}, [ port.description || '' ]);
 
 			var portBox = E('div', { 

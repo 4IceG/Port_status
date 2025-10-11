@@ -447,7 +447,8 @@ function showEditLabelModal(port, labelElement, descriptionElement, ports) {
 		'class': 'cbi-input-text',
 		'value': currentLabel,
 		'style': 'width: 100%; margin-bottom: 1em;',
-		'placeholder': port.device
+		'placeholder': port.device,
+		'maxlength': '9'
 	});
 	
 	var descriptionInputEl = E('input', {
@@ -455,7 +456,8 @@ function showEditLabelModal(port, labelElement, descriptionElement, ports) {
 		'class': 'cbi-input-text',
 		'value': currentDescription,
 		'style': 'width: 100%; margin-bottom: 1em;',
-		'placeholder': _('Optional description')
+		'placeholder': _('Optional description'),
+		'maxlength': '50'
 	});
 	
 	var infoText = E('p', { 'style': 'margin: 0.5em 0; font-size: 90%; color: var(--text-color-secondary);' }, [
@@ -463,7 +465,9 @@ function showEditLabelModal(port, labelElement, descriptionElement, ports) {
 		E('strong', {}, port.device),
 		E('br'),
 		_('Original label')+': ',
-		E('strong', {}, originalLabel)
+		E('strong', {}, originalLabel),
+		E('br'),
+		E('small', {}, _('Label max 9 chars, description max 50 chars'))
 	]);
 	
 	var modalContent = E('div', {}, [
@@ -828,12 +832,13 @@ return baseclass.extend({
 
 			var labelDiv = E('div', { 
 				'class': 'ifacebox-head port-label', 
-				'style': 'font-weight:bold; position: relative; z-index: 2;' 
+				'style': 'font-weight:bold; position: relative; z-index: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0.25em 0.5em;' 
 			}, [ port.label || port.device ]);
 
 			var descriptionDiv = E('div', { 
 				'class': 'ifacebox-body port-description', 
-				'style': 'font-size:70%; color: var(--text-color-secondary); padding: 0.2em 0.5em; min-height: 1.2em; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; display: ' + (port.description ? 'block' : 'none')
+				'style': 'font-size:70%; color: var(--text-color-secondary); padding: 0.2em 0.5em; min-height: 1.2em; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; cursor: help; display: ' + (port.description ? 'block' : 'none'),
+				'title': port.description || ''  // Dodany tooltip z pełnym opisem
 			}, [ port.description || '' ]);
 
 			var portBox = E('div', { 

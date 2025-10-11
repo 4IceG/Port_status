@@ -22,12 +22,20 @@ msgstr "Anuluj"
 msgid "Save"
 msgstr "Zapisz"
 
+msgid "Port configuration saved successfully"
+msgstr "Konfiguracja portu została poprawnie zapisana"
+
+msgid "Port order saved"
+msgstr "Zapisano kolejność portu"
+
 msgid "Click to edit label"
 msgstr "Kliknij aby edytować etykietę"
 
 msgid "Hold to drag and reorder"
 msgstr "Przytrzymaj aby przeciągnąć i zmienić kolejność"
 
+msgid "Label max 9 chars, description max 50 chars"
+msgstr "Etykieta to maksymalnie 9 znaków, limit dla opisu wynosi 50 znaków"
+
 msgid "Enter description (optional):"
 msgstr "Dodaj opis (opcjonalnie):"
-

@@ -15,10 +15,21 @@ var callGetBuiltinEthernetPorts = rpc.declare({
 	expect: { result: [] }
 });
 
-var USER_PORTS_FILE = '/etc/config/user_defined_ports';
+var callWritePortConfig = rpc.declare({
+	object: 'file',
+	method: 'write',
+	params: ['path', 'data'],
+	expect: { }
+});
+
+var USER_PORTS_FILE = '/etc/user_defined_ports.json';
 var isDragging = false;
 var draggedElement = null;
 var originalPorts = [];
+
+function popTimeout(a, message, timeout, severity) {
+    ui.addTimeLimitedNotification(a, message, timeout, severity)
+}
 
 function isString(v)
 {
@@ -308,15 +319,22 @@ function renderNetworksTooltip(pmap) {
 
 function loadUserPorts() {
 	return L.resolveDefault(fs.read(USER_PORTS_FILE), null).then(function(content) {
-		if (!content)
+		if (!content) {
+			console.log('User ports file not found, will be created on first save');
 			return null;
+		}
 		
 		try {
-			return JSON.parse(content);
+			var parsed = JSON.parse(content);
+			console.log('Successfully loaded user ports config');
+			return parsed;
 		} catch(e) {
 			console.error('Failed to parse user ports config:', e);
 			return null;
 		}
+	}).catch(function(err) {
+		console.log('User ports file does not exist yet:', err);
+		return null;
 	});
 }
 
@@ -331,7 +349,44 @@ function saveUserPorts(ports) {
 		};
 	});
 	
-	return fs.write(USER_PORTS_FILE, JSON.stringify(config, null, 2));
+	var jsonContent = JSON.stringify(config, null, 2);
+	
+	// fs.write
+	return fs.write(USER_PORTS_FILE, jsonContent).then(function() {
+		console.log('Port configuration saved successfully to', USER_PORTS_FILE);
+		return true;
+	}).catch(function(err) {
+		console.warn('fs.write failed, trying exec method:', err);
+		
+		// fs.exec
+		return fs.exec('/bin/sh', ['-c', 'echo \'' + jsonContent.replace(/'/g, "'\\''") + '\' > ' + USER_PORTS_FILE]).then(function(res) {
+			if (res.code === 0) {
+				console.log('Port configuration saved via exec');
+				return true;
+			} else {
+				throw new Error('exec write failed with code ' + res.code);
+			}
+		}).catch(function(err2) {
+			console.error('Both write methods failed:', err2);
+			
+			// folder permissions
+			return fs.stat('/etc').then(function(stat) {
+				var errorMsg = _('Cannot save port configuration. ') + 
+				               _('Directory /etc may be read-only or insufficient permissions. ') + 
+				               _('Try running: chmod 755 /etc && touch %s && chmod 644 %s').format(USER_PORTS_FILE, USER_PORTS_FILE);
+				
+				ui.addNotification(null, E('p', {}, [
+					E('strong', {}, _('Save Error')),
+					E('br'),
+					errorMsg,
+					E('br'),
+					E('small', {}, _('Original error: %s').format(err.message))
+				]), 'error');
+				
+				throw new Error(errorMsg);
+			});
+		});
+	});
 }
 
 function mergePortConfigs(detectedPorts, userConfig) {
@@ -346,12 +401,14 @@ function mergePortConfigs(detectedPorts, userConfig) {
 	var merged = [];
 	var addedDevices = {};
 	
-	/* Ports from user config */
+	/* Ports from user config (preserve order) */
 	userConfig.forEach(function(userPort) {
 		var detected = detectedPorts.find(function(p) { return p.device === userPort.device; });
 		if (detected) {
 			merged.push({
-				...detected,
+				device: detected.device,
+				role: detected.role,
+				netdev: detected.netdev,
 				label: userPort.label || detected.device,
 				originalLabel: userPort.originalLabel || detected.device,
 				description: userPort.description || ''
@@ -360,14 +417,16 @@ function mergePortConfigs(detectedPorts, userConfig) {
 		}
 	});
 	
-	/* Add new ports */
+	/* Add newly detected ports */
 	detectedPorts.forEach(function(port) {
 		if (!addedDevices[port.device]) {
 			merged.push({
-				...port,
+				device: port.device,
+				role: port.role,
+				netdev: port.netdev,
 				label: port.device,
 				originalLabel: port.originalLabel || port.device,
-				description: port.description || ''
+				description: ''
 			});
 		}
 	});
@@ -387,17 +446,19 @@ function showEditLabelModal(port, labelElement, descriptionElement, ports) {
 		'type': 'text',
 		'class': 'cbi-input-text',
 		'value': currentLabel,
-		'style': 'width: 100%; margin-bottom: 1em;'
+		'style': 'width: 100%; margin-bottom: 1em;',
+		'placeholder': port.device
 	});
 	
 	var descriptionInputEl = E('input', {
 		'type': 'text',
 		'class': 'cbi-input-text',
 		'value': currentDescription,
-		'style': 'width: 100%; margin-bottom: 1em;'
+		'style': 'width: 100%; margin-bottom: 1em;',
+		'placeholder': _('Optional description')
 	});
 	
-	var infoText = E('p', { 'style': 'margin: 0.5em 0; font-size: 90%;' }, [
+	var infoText = E('p', { 'style': 'margin: 0.5em 0; font-size: 90%; color: var(--text-color-secondary);' }, [
 		_('Device')+': ',
 		E('strong', {}, port.device),
 		E('br'),
@@ -458,8 +519,11 @@ function showEditLabelModal(port, labelElement, descriptionElement, ports) {
 						descriptionElement.style.display = 'none';
 					}
 					
+					ui.showModal(null, E('p', { 'class': 'spinning' }, _('Saving configuration...')));
+					
 					saveUserPorts(ports).then(function() {
 						ui.hideModal();
+						popTimeout(null, E('p', _('Port configuration saved successfully')), 5000, 'info');
 						poll.start();
 					}).catch(function(err) {
 						ui.hideModal();
@@ -614,7 +678,7 @@ function makeDraggable(element, port, container, ports) {
 			dragHandle.style.pointerEvents = 'none';
 			document.body.style.cursor = '';
 			
-			/* Refresh ports array */
+			/* Refresh ports array order */
 			var newOrder = Array.from(container.children).map(function(el) {
 				return el.__port__;
 			}).filter(function(p) { return p; });
@@ -625,6 +689,7 @@ function makeDraggable(element, port, container, ports) {
 			saveUserPorts(ports).then(function() {
 				isDragging = false;
 				draggedElement = null;
+                popTimeout(null, E('p', _('Port order saved')), 5000, 'info');
 				poll.start();
 			}).catch(function(err) {
 				isDragging = false;
@@ -679,10 +744,14 @@ return baseclass.extend({
 		    userConfig = data[5];
 
 		if (Array.isArray(data[0]) && data[0].length > 0) {
-			detected_ports = data[0].map(port => ({
-				...port,
-				netdev: network.instantiateDevice(port.device)
-			}));
+			detected_ports = data[0].map(function(port) {
+				return {
+					device: port.device,
+					role: port.role,
+					netdev: network.instantiateDevice(port.device),
+					originalLabel: port.label || port.device
+				};
+			});
 		}
 		else {
 			if (L.isObject(board) && L.isObject(board.network)) {
@@ -691,7 +760,7 @@ return baseclass.extend({
 						continue;
 
 					if (Array.isArray(board.network[k].ports))
-						for (let i = 0; i < board.network[k].ports.length; i++)
+						for (var i = 0; i < board.network[k].ports.length; i++)
 							detected_ports.push({
 								role: k,
 								device: board.network[k].ports[i],
@@ -713,7 +782,7 @@ return baseclass.extend({
 			return L.naturalCompare(a.device, b.device);
 		});
 
-		/* Save init config */
+		/* Save initial config if doesn't exist */
 		if (!userConfig) {
 			var initialConfig = detected_ports.map(function(p) {
 				return {
@@ -724,7 +793,21 @@ return baseclass.extend({
 					description: ''
 				};
 			});
-			saveUserPorts(initialConfig);
+			
+			console.log('Creating initial port configuration...');
+			saveUserPorts(initialConfig).then(function() {
+				console.log('Initial configuration created successfully');
+			}).catch(function(err) {
+				console.error('Failed to create initial configuration:', err);
+				ui.addNotification(null, E('p', {}, [
+					_('Warning: Could not create port configuration file.'),
+					E('br'),
+					_('Port customizations will not be saved.'),
+					E('br'),
+					E('small', {}, _('Check /etc directory permissions'))
+				]), 'warning');
+			});
+			
 			userConfig = initialConfig;
 		}
 

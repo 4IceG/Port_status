@@ -39,3 +39,6 @@ msgstr "Etykieta to maksymalnie 9 znaków, limit dla opisu wynosi 50 znaków"
 
 msgid "Enter description (optional):"
 msgstr "Dodaj opis (opcjonalnie):"
+
+msgid "Optional description"
+msgstr "Opcjonalny opis portu"

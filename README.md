@@ -128,7 +128,10 @@ We search for the section with permissions for luci-mod-status-index-ports and r
 	},
 ```    
 3. Dodajemy tłumaczenie dla nowych okienek / elementów menu. Kopiujemy linijki tłumaczenia z pliku Port_status.pot do pliku w lokalizacji /feeds/luci/modules/luci-base/po/pl
+4. Dopisujemy do pliku
+   > /package/base-files/files/lib/upgrade/keep.d/base-files-essential
 
+	na końcu nową linijkę /etc/user_defined_ports.json, aby zachować ustawienia poczynione przez użytkownika podczas generowania archiwum z kopią zapasową
 </details>
 
 

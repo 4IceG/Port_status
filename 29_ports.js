@@ -467,7 +467,9 @@ function showEditLabelModal(port, labelElement, descriptionElement, ports) {
 		_('Original label')+': ',
 		E('strong', {}, originalLabel),
 		E('br'),
-		E('small', {}, _('Label max 9 chars, description max 50 chars'))
+		E('small', {}, _('Label max 9 chars, description max 50 chars.')),
+		E('br'),
+		E('small', {}, _('User settings are saved to the /etc/user_defined_ports.json file.'))
 	]);
 	
 	var modalContent = E('div', {}, [
@@ -488,53 +490,155 @@ function showEditLabelModal(port, labelElement, descriptionElement, ports) {
 		}
 	}, _('Restore Original'));
 	
+	var handleDownloadConfig = function() {
+		L.resolveDefault(fs.read(USER_PORTS_FILE), null).then(function(content) {
+			if (content) {
+				var link = E('a', {
+					'download': 'user_defined_ports.json',
+					'href': URL.createObjectURL(new Blob([content], {
+						type: 'application/json'
+					}))
+				});
+				link.click();
+				URL.revokeObjectURL(link.href);
+				popTimeout(null, E('p', _('Configuration file downloaded')), 3000, 'info');
+			} else {
+				ui.addNotification(null, E('p', _('Configuration file not found')), 'warning');
+			}
+		}).catch(function(err) {
+			ui.addNotification(null, E('p', _('Download error: %s').format(err.message)), 'error');
+		});
+	};
+	
+	var handleUploadConfig = function(ev) {
+		var fileInput = E('input', {
+			'type': 'file',
+			'accept': '.json',
+			'style': 'display: none',
+			'change': function(e) {
+				var file = e.target.files[0];
+				if (!file) return;
+				
+				var reader = new FileReader();
+				reader.onload = function(event) {
+					try {
+						var config = JSON.parse(event.target.result);
+						
+						if (!Array.isArray(config)) {
+							throw new Error(_('Invalid configuration format'));
+						}
+						
+						ui.showModal(_('Restore configuration'), [
+							E('p', _('This will overwrite current ports configuration. Continue?')),
+							E('div', { 'class': 'right' }, [
+								E('button', {
+									'class': 'cbi-button cbi-button-neutral',
+									'click': function() {
+										ui.hideModal();
+										poll.start();
+									}
+								}, _('Cancel')),
+								' ',
+								E('button', {
+									'class': 'cbi-button cbi-button-positive',
+									'click': function() {
+										fs.write(USER_PORTS_FILE, JSON.stringify(config, null, 2)).then(function() {
+											ui.hideModal();
+											popTimeout(null, E('p', _('Configuration restored successfully. Reloading...')), 3000, 'info');
+											setTimeout(function() {
+												window.location.reload();
+											}, 1500);
+										}).catch(function(err) {
+											ui.hideModal();
+											ui.addNotification(null, E('p', _('File restore failed: %s').format(err.message)), 'error');
+											poll.start();
+										});
+									}
+								}, _('Restore'))
+							])
+						]);
+					} catch(err) {
+						ui.addNotification(null, E('p', _('Invalid JSON file: %s').format(err.message)), 'error');
+					}
+				};
+				reader.readAsText(file);
+			}
+		});
+		
+		document.body.appendChild(fileInput);
+		fileInput.click();
+		document.body.removeChild(fileInput);
+	};
+	
+	var backupComboButton = new ui.ComboButton('_save', {
+		'_save': _('Save .json file'),
+		'_upload': _('Upload .json file')
+	}, {
+		'click': function(ev, name) {
+			if (name === '_save') {
+				handleDownloadConfig();
+			} else if (name === '_upload') {
+				handleUploadConfig(ev);
+			}
+		},
+		'classes': {
+			'_save': 'cbi-button cbi-button-neutral',
+			'_upload': 'cbi-button cbi-button-neutral'
+		}
+	}).render();
+	
 	ui.showModal(modalTitle, [
 		modalContent,
-		E('div', { 'class': 'right' }, [
-			restoreBtn,
-			' ',
-			E('button', {
-				'class': 'cbi-button cbi-button-neutral',
-				'click': function() {
-					ui.hideModal();
-					poll.start();
-				}
-			}, _('Cancel')),
-			' ',
-			E('button', {
-				'class': 'cbi-button cbi-button-positive',
-				'click': function() {
-					var newLabel = labelInputEl.value.trim();
-					var newDescription = descriptionInputEl.value.trim();
-					
-					if (newLabel === '') {
-						newLabel = port.device;
-					}
-					
-					port.label = newLabel;
-					port.description = newDescription;
-					labelElement.textContent = newLabel;
-					
-					if (newDescription) {
-						descriptionElement.textContent = newDescription;
-						descriptionElement.style.display = 'block';
-					} else {
-						descriptionElement.textContent = '';
-						descriptionElement.style.display = 'none';
-					}
-					
-					ui.showModal(null, E('p', { 'class': 'spinning' }, _('Saving configuration...')));
-					
-					saveUserPorts(ports).then(function() {
-						ui.hideModal();
-						popTimeout(null, E('p', _('Port configuration saved successfully')), 5000, 'info');
-						poll.start();
-					}).catch(function(err) {
+		E('div', { 'style': 'display: flex; justify-content: space-between; align-items: center;' }, [
+			E('div', {}, [
+				backupComboButton
+			]),
+			E('div', { 'class': 'right' }, [
+				restoreBtn,
+				' ',
+				E('button', {
+					'class': 'cbi-button cbi-button-neutral',
+					'click': function() {
 						ui.hideModal();
 						poll.start();
-					});
-				}
-			}, _('Save'))
+					}
+				}, _('Cancel')),
+				' ',
+				E('button', {
+					'class': 'cbi-button cbi-button-positive',
+					'click': function() {
+						var newLabel = labelInputEl.value.trim();
+						var newDescription = descriptionInputEl.value.trim();
+						
+						if (newLabel === '') {
+							newLabel = port.device;
+						}
+						
+						port.label = newLabel;
+						port.description = newDescription;
+						labelElement.textContent = newLabel;
+						
+						if (newDescription) {
+							descriptionElement.textContent = newDescription;
+							descriptionElement.style.display = 'block';
+						} else {
+							descriptionElement.textContent = '';
+							descriptionElement.style.display = 'none';
+						}
+						
+						ui.showModal(null, E('p', { 'class': 'spinning' }, _('Saving configuration...')));
+						
+						saveUserPorts(ports).then(function() {
+							ui.hideModal();
+							popTimeout(null, E('p', _('Port configuration saved successfully')), 5000, 'info');
+							poll.start();
+						}).catch(function(err) {
+							ui.hideModal();
+							poll.start();
+						});
+					}
+				}, _('Save'))
+			])
 		])
 	]);
 	

@@ -138,4 +138,7 @@ We search for the section with permissions for luci-mod-status-index-ports and r
 
 ### <img src="https://raw.githubusercontent.com/4IceG/Personal_data/master/dooffy_design_icons_EU_flags_United_Kingdom.png" height="24"> Preview / <img src="https://raw.githubusercontent.com/4IceG/Personal_data/master/dooffy_design_icons_EU_flags_Poland.png" height="24"> Podgląd
 
+<img width="1290" height="510" alt="Status_port" src="https://github.com/user-attachments/assets/cee839c8-f8ef-444b-b888-456f0761d7fc" />
+
 ![](https://github.com/4IceG/Personal_data/blob/master/zrzuty/Port_status.gif?raw=true)
+

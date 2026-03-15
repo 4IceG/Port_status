@@ -8,7 +8,7 @@
 PORTS_ORIG="/www/luci-static/resources/view/status/include/29_ports.js"
 PORTS_BAK="/www/luci-static/resources/view/status/include/29_ports.bak"
 PORTS_CUSTOM="/www/luci-static/resources/view/status/include/29_ports_custom.js"
-USER_DEFINED_PORTS="/etc/user_defined_ports.json"
+USER_DEFINED_PORTS="/var/user_defined_ports.json"
 
 sleep 5
 

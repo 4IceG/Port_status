@@ -10,8 +10,6 @@
 #  
 ##################################################################################################################
 
-ACTIVITY_THRESHOLD=2000
-
 check_activity() {
     local port="$1"
     local port_path="/sys/class/net/$port"
@@ -24,20 +22,19 @@ check_activity() {
         return
     fi
     
-    local rx1 tx1 rx2 tx2
-    rx1=$(cat "$rx_bytes_file" 2>/dev/null || echo "0")
-    tx1=$(cat "$tx_bytes_file" 2>/dev/null || echo "0")
+    local rx1=$(cat "$rx_bytes_file" 2>/dev/null || echo "0")
+    local tx1=$(cat "$tx_bytes_file" 2>/dev/null || echo "0")
     
-    sleep 0.5
+    sleep 1
     
-    rx2=$(cat "$rx_bytes_file" 2>/dev/null || echo "0")
-    tx2=$(cat "$tx_bytes_file" 2>/dev/null || echo "0")
+    local rx2=$(cat "$rx_bytes_file" 2>/dev/null || echo "0")
+    local tx2=$(cat "$tx_bytes_file" 2>/dev/null || echo "0")
     
     local rx_diff=$((rx2 - rx1))
     local tx_diff=$((tx2 - tx1))
     local total_diff=$((rx_diff + tx_diff))
     
-    if [ "$total_diff" -gt "$ACTIVITY_THRESHOLD" ]; then
+    if [ "$total_diff" -gt 0 ]; then
         echo "active"
     else
         echo "idle"
@@ -194,8 +191,9 @@ case "$1" in
                 ;;
             setPortStatus)
                 read input
-                port=$(echo "$input" | jsonfilter -e '@.port')
-                status=$(echo "$input" | jsonfilter -e '@.status')
+                json_load "$input"
+                json_get_var port port
+                json_get_var status status
                 set_port_status "$port" "$status"
                 ;;
         esac

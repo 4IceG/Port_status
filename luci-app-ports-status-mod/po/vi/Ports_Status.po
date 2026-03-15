@@ -43,8 +43,8 @@ msgstr "Nhập mô tả (tùy chọn):"
 msgid "Optional description"
 msgstr "Mô tả tùy chọn"
 
-msgid "User settings are saved to the /etc/user_defined_ports.json file."
-msgstr "Cài đặt người dùng được lưu vào tệp /etc/user_defined_ports.json."
+msgid "User settings are saved to the /var/user_defined_ports.json file."
+msgstr "Cài đặt người dùng được lưu vào tệp /var/user_defined_ports.json."
 
 msgid "Configuration file downloaded"
 msgstr "Đã tải xuống tệp cấu hình"
@@ -82,11 +82,11 @@ msgstr "Không thể lưu cấu hình trống"
 msgid "Cannot save port configuration. "
 msgstr "Không thể lưu cấu hình cổng. "
 
-msgid "Directory /etc may be read-only or insufficient permissions. "
-msgstr "Thư mục /etc có thể chỉ đọc hoặc không đủ quyền. "
+msgid "Directory /var may be read-only or insufficient permissions. "
+msgstr "Thư mục /var có thể chỉ đọc hoặc không đủ quyền. "
 
-msgid "Try running: chmod 755 /etc && touch %s && chmod 644 %s"
-msgstr "Thử chạy: chmod 755 /etc && touch %s && chmod 644 %s"
+msgid "Try running: chmod 755 /var && touch %s && chmod 644 %s"
+msgstr "Thử chạy: chmod 755 /var && touch %s && chmod 644 %s"
 
 msgid "Save Error"
 msgstr "Lỗi lưu"

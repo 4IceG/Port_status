@@ -9,15 +9,15 @@
         "file": [ "read" ]
       },
       "file": {
-        "/etc/user_defined_ports.json": [ "read" ],
-        "/etc/user_defined_ports.json.bak": [ "read" ],
+        "/var/user_defined_ports.json": [ "read" ],
+        "/var/user_defined_ports.json.bak": [ "read" ],
         "/www/luci-static/resources/view/status/include/29_ports.js": [ "read" ]
       }
     },
     "write": {
       "file": {
-        "/etc/user_defined_ports.json": [ "write" ],
-        "/etc/user_defined_ports.json.bak": [ "write" ]
+        "/var/user_defined_ports.json": [ "write" ],
+        "/var/user_defined_ports.json.bak": [ "write" ]
       },
       "ubus": {
         "file": [ "write", "exec" ],

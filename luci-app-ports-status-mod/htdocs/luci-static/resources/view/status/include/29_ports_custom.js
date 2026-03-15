@@ -58,14 +58,18 @@ var callSetPortStatus = rpc.declare({
 	expect: { }
 });
 
-var USER_PORTS_FILE = '/etc/user_defined_ports.json';
-var USER_PORTS_BACKUP = '/etc/user_defined_ports.json.bak';
+var USER_PORTS_FILE = '/var/user_defined_ports.json';
+var USER_PORTS_BACKUP = '/var/user_defined_ports.json.bak';
 var CONFIG_LOCK = false;
 var isDragging = false;
 var draggedElement = null;
 var originalPorts = [];
 
 var _portsStatusTimer = null;
+
+function popTimeout(a, message, timeout, severity) {
+    ui.addTimeLimitedNotification(a, message, timeout, severity);
+}
 
 function showPortsStatus(message) {
 	var statusBox = document.getElementById('ports-operation-status');
@@ -780,7 +784,7 @@ function showEditLabelModal(port, labelElement, descriptionElement, statusElemen
 									'click': function() {
 										fs.write(USER_PORTS_FILE, JSON.stringify(config, null, 2)).then(function() {
 											ui.hideModal();
-											ui.addNotification(null, E('p', _('Configuration restored successfully. Reloading...')), 'info');
+											popTimeout(null, E('p', _('Configuration restored successfully. Reloading...')), 5000, 'info');
 											setTimeout(function() {
 												window.location.reload();
 											}, 1500);
@@ -846,7 +850,7 @@ function showEditLabelModal(port, labelElement, descriptionElement, statusElemen
 									return setFileReadOnly(USER_PORTS_FILE);
 								}).then(function() {
 									ui.hideModal();
-									ui.addNotification(null, E('p', _('Configuration restored from backup. Reloading...')), 'info');
+                                    popTimeout(null, E('p', _('Configuration restored from backup. Reloading...')), 5000, 'info');									
 									setTimeout(function() { window.location.reload(); }, 1500);
 								}).catch(function(err) {
 									ui.hideModal();
@@ -885,7 +889,7 @@ function showEditLabelModal(port, labelElement, descriptionElement, statusElemen
 			}).then(function(ok) {
 				if (ok) {
 					return setFileReadOnly(USER_PORTS_BACKUP).then(function() {
-						ui.addNotification(null, E('p', _('Backup file created: %s').format(USER_PORTS_BACKUP)), 'info');
+						popTimeout(null, E('p', _('Backup file created: %s').format(USER_PORTS_BACKUP)), 5000, 'info');
 					});
 				} else {
 					ui.addNotification(null, E('p', _('Backup write verification failed!')), 'error');

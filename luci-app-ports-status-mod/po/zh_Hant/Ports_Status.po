@@ -43,8 +43,8 @@ msgstr "輸入描述（選填）："
 msgid "Optional description"
 msgstr "選填描述"
 
-msgid "User settings are saved to the /etc/user_defined_ports.json file."
-msgstr "使用者設定儲存在 /etc/user_defined_ports.json 檔案中。"
+msgid "User settings are saved to the /var/user_defined_ports.json file."
+msgstr "使用者設定儲存在 /var/user_defined_ports.json 檔案中。"
 
 msgid "Configuration file downloaded"
 msgstr "配置檔案已下載"
@@ -82,11 +82,11 @@ msgstr "無法儲存空白配置"
 msgid "Cannot save port configuration. "
 msgstr "無法儲存連接埠配置。"
 
-msgid "Directory /etc may be read-only or insufficient permissions. "
-msgstr "目錄 /etc 可能為唯讀或權限不足。"
+msgid "Directory /var may be read-only or insufficient permissions. "
+msgstr "目錄 /var 可能為唯讀或權限不足。"
 
-msgid "Try running: chmod 755 /etc && touch %s && chmod 644 %s"
-msgstr "嘗試執行：chmod 755 /etc && touch %s && chmod 644 %s"
+msgid "Try running: chmod 755 /var && touch %s && chmod 644 %s"
+msgstr "嘗試執行：chmod 755 /var && touch %s && chmod 644 %s"
 
 msgid "Save Error"
 msgstr "儲存錯誤"

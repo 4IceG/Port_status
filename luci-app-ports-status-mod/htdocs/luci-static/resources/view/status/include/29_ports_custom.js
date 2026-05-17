@@ -58,8 +58,8 @@ var callSetPortStatus = rpc.declare({
 	expect: { }
 });
 
-var USER_PORTS_FILE = '/var/user_defined_ports.json';
-var USER_PORTS_BACKUP = '/var/user_defined_ports.json.bak';
+var USER_PORTS_FILE = '/etc/user_defined_ports.json';
+var USER_PORTS_BACKUP = '/etc/user_defined_ports.json.bak';
 var CONFIG_LOCK = false;
 var isDragging = false;
 var draggedElement = null;
@@ -1346,13 +1346,6 @@ return baseclass.extend({
 					console.log('Initial configuration created successfully');
 				}).catch(function(err) {
 					console.error('Failed to create initial configuration:', err);
-					ui.addNotification(null, E('p', {}, [
-						_('Warning: Could not create port configuration file.'),
-						E('br'),
-						_('Port customizations will not be saved.'),
-						E('br'),
-						E('small', {}, _('Check /etc directory permissions'))
-					]), 'warning');
 				});
 				
 				userConfig = initialConfig;

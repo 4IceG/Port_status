@@ -43,8 +43,8 @@ msgstr "Dodaj opis (opcjonalnie):"
 msgid "Optional description"
 msgstr "Opcjonalny opis portu"
 
-msgid "User settings are saved to the /var/user_defined_ports.json file."
-msgstr "Ustawienia użytkownika zapisywane są w pliku /var/user_defined_ports.json."
+msgid "User settings are saved to the /etc/user_defined_ports.json file."
+msgstr "Ustawienia użytkownika zapisywane są w pliku /etc/user_defined_ports.json."
 
 msgid "Configuration file downloaded"
 msgstr "Pobrano plik z ustawieniami"
@@ -82,11 +82,11 @@ msgstr "Nie można zapisać pustej konfiguracji"
 msgid "Cannot save port configuration. "
 msgstr "Nie można zapisać konfiguracji portów. "
 
-msgid "Directory /var may be read-only or insufficient permissions. "
-msgstr "Katalog /var może być tylko do odczytu lub mieć niewystarczające uprawnienia. "
+msgid "Directory /etc may be read-only or insufficient permissions. "
+msgstr "Katalog /etc może być tylko do odczytu lub mieć niewystarczające uprawnienia. "
 
-msgid "Try running: chmod 755 /var && touch %s && chmod 644 %s"
-msgstr "Spróbuj uruchomić: chmod 755 /var && touch %s && chmod 644 %s"
+msgid "Try running: chmod 755 /etc && touch %s && chmod 644 %s"
+msgstr "Spróbuj uruchomić: chmod 755 /etc && touch %s && chmod 644 %s"
 
 msgid "Save Error"
 msgstr "Błąd zapisu"

@@ -12,12 +12,13 @@ LUCI_TITLE:=Small modification of Ports Status
 LUCI_DEPENDS:=+luci-mod-admin-full
 LUCI_PKGARCH:=all
 PKG_LICENSE:=MIT
-PKG_VERSION:=1.0.6
-PKG_RELEASE:=20260315
+PKG_VERSION:=1.0.7
+PKG_RELEASE:=20260517
+
 
 define Package/luci-app-ports-status-mod/conffiles
-/var/user_defined_ports.json
-/var/user_defined_ports.json.bak
+/etc/user_defined_ports.json
+/etc/user_defined_ports.json.bak
 endef
 
 include $(TOPDIR)/feeds/luci/luci.mk

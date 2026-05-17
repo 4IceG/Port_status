@@ -1,5 +1,10 @@
 msgid ""
-msgstr "Content-Type: text/plain; charset=UTF-8"
+msgstr ""
+"Language-Team: Rafał Wabik (IceG)\n"
+"Language: fr\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 
 msgid "Edit Port Label"
 msgstr "Modifier l'étiquette du port"
@@ -43,8 +48,8 @@ msgstr "Entrez la description (facultatif) :"
 msgid "Optional description"
 msgstr "Description facultative"
 
-msgid "User settings are saved to the /var/user_defined_ports.json file."
-msgstr "Les paramètres utilisateur sont enregistrés dans le fichier /var/user_defined_ports.json."
+msgid "User settings are saved to the /etc/user_defined_ports.json file."
+msgstr "Les paramètres utilisateur sont enregistrés dans le fichier /etc/user_defined_ports.json."
 
 msgid "Configuration file downloaded"
 msgstr "Fichier de configuration téléchargé"
@@ -82,11 +87,11 @@ msgstr "Impossible d'enregistrer une configuration vide"
 msgid "Cannot save port configuration. "
 msgstr "Impossible d'enregistrer la configuration des ports. "
 
-msgid "Directory /var may be read-only or insufficient permissions. "
-msgstr "Le répertoire /var est peut-être en lecture seule ou les permissions sont insuffisantes. "
+msgid "Directory /etc may be read-only or insufficient permissions. "
+msgstr "Le répertoire /etc est peut-être en lecture seule ou les permissions sont insuffisantes. "
 
-msgid "Try running: chmod 755 /var && touch %s && chmod 644 %s"
-msgstr "Essayez d'exécuter : chmod 755 /var && touch %s && chmod 644 %s"
+msgid "Try running: chmod 755 /etc && touch %s && chmod 644 %s"
+msgstr "Essayez d'exécuter : chmod 755 /etc && touch %s && chmod 644 %s"
 
 msgid "Save Error"
 msgstr "Erreur d'enregistrement"

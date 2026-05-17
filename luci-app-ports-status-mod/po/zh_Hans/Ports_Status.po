@@ -1,5 +1,10 @@
 msgid ""
-msgstr "Content-Type: text/plain; charset=UTF-8"
+msgstr ""
+"Language-Team: Rafał Wabik (IceG)\n"
+"Language: zh_Hans\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 msgid "Edit Port Label"
 msgstr "编辑端口标签"
@@ -43,8 +48,8 @@ msgstr "输入描述（可选）："
 msgid "Optional description"
 msgstr "可选描述"
 
-msgid "User settings are saved to the /var/user_defined_ports.json file."
-msgstr "用户设置保存在 /var/user_defined_ports.json 文件中。"
+msgid "User settings are saved to the /etc/user_defined_ports.json file."
+msgstr "用户设置保存在 /etc/user_defined_ports.json 文件中。"
 
 msgid "Configuration file downloaded"
 msgstr "配置文件已下载"
@@ -82,11 +87,11 @@ msgstr "无法保存空配置"
 msgid "Cannot save port configuration. "
 msgstr "无法保存端口配置。"
 
-msgid "Directory /var may be read-only or insufficient permissions. "
-msgstr "目录 /var 可能为只读或权限不足。"
+msgid "Directory /etc may be read-only or insufficient permissions. "
+msgstr "目录 /etc 可能为只读或权限不足。"
 
-msgid "Try running: chmod 755 /var && touch %s && chmod 644 %s"
-msgstr "尝试运行：chmod 755 /var && touch %s && chmod 644 %s"
+msgid "Try running: chmod 755 /etc && touch %s && chmod 644 %s"
+msgstr "尝试运行：chmod 755 /etc && touch %s && chmod 644 %s"
 
 msgid "Save Error"
 msgstr "保存错误"

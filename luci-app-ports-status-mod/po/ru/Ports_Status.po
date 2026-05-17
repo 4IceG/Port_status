@@ -1,5 +1,11 @@
 msgid ""
-msgstr "Content-Type: text/plain; charset=UTF-8"
+msgstr ""
+"Language-Team: Rafał Wabik (IceG)\n"
+"Language: ru\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 msgid "Edit Port Label"
 msgstr "Редактировать метку порта"
@@ -43,8 +49,8 @@ msgstr "Введите описание (необязательно):"
 msgid "Optional description"
 msgstr "Необязательное описание"
 
-msgid "User settings are saved to the /var/user_defined_ports.json file."
-msgstr "Пользовательские настройки сохраняются в файле /var/user_defined_ports.json."
+msgid "User settings are saved to the /etc/user_defined_ports.json file."
+msgstr "Пользовательские настройки сохраняются в файле /etc/user_defined_ports.json."
 
 msgid "Configuration file downloaded"
 msgstr "Файл конфигурации загружен"
@@ -82,11 +88,11 @@ msgstr "Невозможно сохранить пустую конфигура�
 msgid "Cannot save port configuration. "
 msgstr "Невозможно сохранить конфигурацию портов. "
 
-msgid "Directory /var may be read-only or insufficient permissions. "
-msgstr "Каталог /var может быть доступен только для чтения или иметь недостаточные права доступа. "
+msgid "Directory /etc may be read-only or insufficient permissions. "
+msgstr "Каталог /etc может быть доступен только для чтения или иметь недостаточные права доступа. "
 
-msgid "Try running: chmod 755 /var && touch %s && chmod 644 %s"
-msgstr "Попробуйте выполнить: chmod 755 /var && touch %s && chmod 644 %s"
+msgid "Try running: chmod 755 /etc && touch %s && chmod 644 %s"
+msgstr "Попробуйте выполнить: chmod 755 /etc && touch %s && chmod 644 %s"
 
 msgid "Save Error"
 msgstr "Ошибка сохранения"
